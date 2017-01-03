@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "BarcodeMain";
     private ShareActionProvider mShareActionProvider;
-
+    Toolbar myToolbar;
 
 
 
@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
         AppEventsLogger.activateApp(this);
 
 
+         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        myToolbar.setVisibility(View.GONE);
     }
 
 
@@ -171,8 +174,8 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == RC_BARCODE_CAPTURE) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
-                    Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-                    setSupportActionBar(myToolbar);
+                    myToolbar.setVisibility(View.VISIBLE);
+
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
 //                    statusMessage.setText(R.string.barcode_success);
                     decContent.setText(barcode.displayValue);
