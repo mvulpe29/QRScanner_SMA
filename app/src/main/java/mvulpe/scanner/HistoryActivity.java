@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,11 +23,13 @@ public class HistoryActivity extends AppCompatActivity {
     private ListView listResults;
     private ArrayList<ScanResult> results = new ArrayList<ScanResult>();
     private ResultAdapter adapter;
+    private TextView tStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        tStatus = (TextView) findViewById(R.id.tStatus);
 
         listResults = (ListView) findViewById(R.id.listResults);
         adapter = new ResultAdapter(this, R.layout.item, results);
@@ -44,8 +47,10 @@ public class HistoryActivity extends AppCompatActivity {
                     results.add(new ScanResult(timestamp,content));
                     line = reader.readLine();
                 }
-                adapter.notifyDataSetChanged();
+
             }
+            adapter.notifyDataSetChanged();
+            tStatus.setText("Found " + results.size() + " scan results.");
         }catch (FileNotFoundException e) {
             Log.e("history activity", "File not found: " + e.toString());
         } catch (IOException e) {
