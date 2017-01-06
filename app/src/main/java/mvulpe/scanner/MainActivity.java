@@ -3,6 +3,7 @@ package mvulpe.scanner;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -26,6 +27,10 @@ import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import mvulpe.scanner.Reader.BarcodeCaptureActivity;
 
 
@@ -38,13 +43,15 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "BarcodeMain";
     private ShareActionProvider mShareActionProvider;
     Toolbar myToolbar;
-
+    static final String DECODED_TEXT = "decodedText";
+    private String decodedText = "";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         decText = (TextView) findViewById(R.id.decText);
         decContent = (TextView) findViewById(R.id.decContent);
 
@@ -52,14 +59,34 @@ public class MainActivity extends AppCompatActivity {
         AppEventsLogger.activateApp(this);
 
 
-         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         myToolbar.setVisibility(View.GONE);
+
+        if(savedInstanceState!=null){
+            decodedText=savedInstanceState.getString(DECODED_TEXT);
+        }
+
+        if(!decodedText.equals("")){
+            decText.setVisibility(View.VISIBLE);
+            decContent.setVisibility(View.VISIBLE);
+            myToolbar.setVisibility(View.VISIBLE);
+            decContent.setText(decodedText);
+        }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putString(DECODED_TEXT,decodedText);
 
-    public void shareText(){
+        super.onSaveInstanceState(savedInstanceState);
+    }
 
+    public void history(View v){
+        if(v.getId()==R.id.bHistory){
+            Intent intent = new Intent(this, HistoryActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -72,10 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Fetch and store ShareActionProvider
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-
-
-
-
 
         // Return true to display menu
         return super.onCreateOptionsMenu(menu);
@@ -116,16 +139,6 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, RC_BARCODE_CAPTURE);
 
         }
-        /*
-        try {
-            //start the scanning activity from the com.google.zxing.client.android.SCAN intent
-            Intent intent = new Intent(ACTION_SCAN);
-            intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-            startActivityForResult(intent, 0);
-        } catch (ActivityNotFoundException anfe) {
-            //on catch, show the download dialog
-            showDialog(MainActivity.this, "No Scanner Found", "Download a scanner code activity?", "Yes", "No").show();
-        }*/
     }
 
     //alert dialog for downloadDialog
@@ -150,25 +163,6 @@ public class MainActivity extends AppCompatActivity {
         });
         return downloadDialog.show();
     }
-/*
-    //on ActivityResult method
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == 0) {
-            if (resultCode == RESULT_OK) {
-                //get the extras that are returned from the intent
-                String contents = intent.getStringExtra("SCAN_RESULT");
-//                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-//                Toast toast = Toast.makeText(this, "Content:" + contents, Toast.LENGTH_LONG);
-//                toast.show();
-                decText.setText(contents);
-                decText.setVisibility(View.VISIBLE);
-                bOK.setVisibility(View.VISIBLE);
-                bNotOK.setVisibility(View.VISIBLE);
-
-            }
-        }
-    }
-*/
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RC_BARCODE_CAPTURE) {
@@ -178,9 +172,26 @@ public class MainActivity extends AppCompatActivity {
 
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
 //                    statusMessage.setText(R.string.barcode_success);
+                    decodedText = barcode.displayValue;
                     decContent.setText(barcode.displayValue);
                     decText.setVisibility(View.VISIBLE);
                     decContent.setVisibility(View.VISIBLE);
+
+                    String textToWrite = getCurrentTimeDate()+" "+decodedText+"\n";
+
+
+                    FileOutputStream outputStream;
+                    String file = "results";
+                    try{
+                        outputStream = openFileOutput(file, Context.MODE_APPEND);
+                        outputStream.write(textToWrite.getBytes());
+                        outputStream.close();
+                        Toast toast = Toast.makeText(this, textToWrite,Toast.LENGTH_LONG);
+                        toast.show();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                     Log.d(TAG, "Barcode read: " + barcode.displayValue);
                 } else {
 //                    statusMessage.setText(R.string.barcode_failure);
@@ -194,6 +205,12 @@ public class MainActivity extends AppCompatActivity {
         else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    public static String getCurrentTimeDate() {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date now = new Date();
+        return sdfDate.format(now);
     }
 
 }

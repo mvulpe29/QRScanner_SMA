@@ -31,6 +31,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Reader.BarcodeCaptureActivity" />
+        <activity android:name=".HistoryActivity"></activity>
     </application>
 
 </manifest>
