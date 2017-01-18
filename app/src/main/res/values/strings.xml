@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SMA Scanner</string>
+    <string name="app_name">QR Master</string>
     <string name="ok">OK</string>
     <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
     <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
@@ -16,4 +16,8 @@
     <string name="facebook_app_id">305997709801099</string>
     <string name="decText">Decoded Text: </string>
     <string name="shareText">"Check out the text I just decoded from QR: "</string>
+    <string name="testNumber">"1"</string>
+    <string name="testTime">"12:00:00"</string>
+    <string name="testDate">"29/03/94"</string>
+    <string name="testContent">"bla"</string>
 </resources>

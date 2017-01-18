@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.facebook.FacebookSdk;
@@ -36,8 +35,6 @@ import mvulpe.scanner.Reader.BarcodeCaptureActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
     TextView decText, decContent;
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "BarcodeMain";

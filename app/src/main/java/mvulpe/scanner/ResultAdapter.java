@@ -2,13 +2,24 @@ package mvulpe.scanner;
 
 import android.app.Activity;
 import android.content.Context;
+import android.icu.util.Output;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.List;
 
 /**
@@ -19,6 +30,7 @@ public class ResultAdapter extends ArrayAdapter<ScanResult> {
     private Context context;
     private List<ScanResult> results;
     private int layoutResID;
+    private ResultAdapter me = this;
 
     public ResultAdapter(Context context, int layoutResourceID, List<ScanResult> results) {
         super(context, layoutResourceID, results);
@@ -42,6 +54,7 @@ public class ResultAdapter extends ArrayAdapter<ScanResult> {
             itemHolder.lHeader = (RelativeLayout) view.findViewById(R.id.lHeader);
             itemHolder.tDate = (TextView) view.findViewById(R.id.tDate);
             itemHolder.tTime = (TextView) view.findViewById(R.id.tTime);
+            itemHolder.tDelete = (ImageButton) view.findViewById(R.id.tDelete);
 
             view.setTag(itemHolder);
 
@@ -51,10 +64,48 @@ public class ResultAdapter extends ArrayAdapter<ScanResult> {
 
         final ScanResult hItem = results.get(position);
 
-        itemHolder.tIndex.setText(String.valueOf(position + 1));
+        itemHolder.tIndex.setText(String.valueOf(position + 1)+". ");
         itemHolder.tName.setText(hItem.getContent());
         itemHolder.tDate.setText("Date: " + hItem.getTimestamp().substring(0, 10));
         itemHolder.tTime.setText("Time: " + hItem.getTimestamp().substring(11));
+        itemHolder.tDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+//                    File inputFile = new File("results");
+
+
+                    InputStream inputStream = context.openFileInput("results");
+                    OutputStream outputStream = context.openFileOutput("tempResults",Context.MODE_APPEND);
+
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+
+                    String lineToRemove = hItem.getTimestamp();
+                    String currentLine;
+
+                    while ((currentLine = reader.readLine()) != null) {
+                        // trim newline when comparing with lineToRemove
+                        String trimmedLine = currentLine.trim();
+                        if (trimmedLine.startsWith(lineToRemove)) continue;
+                        writer.write(currentLine + System.getProperty("line.separator"));
+                    }
+                    results.remove(hItem);
+                    me.notifyDataSetChanged();
+                    writer.close();
+                    reader.close();
+
+                    File f1 = context.getFileStreamPath("results");
+                    File f2 = context.getFileStreamPath("tempResults");
+
+                    boolean successful = f2.renameTo(f1);
+                }catch(FileNotFoundException e){
+                    e.printStackTrace();
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+            }
+        });
 
         return view;
     }
@@ -64,5 +115,6 @@ public class ResultAdapter extends ArrayAdapter<ScanResult> {
         TextView tName;
         RelativeLayout lHeader;
         TextView tDate, tTime;
+        ImageButton tDelete;
     }
 }

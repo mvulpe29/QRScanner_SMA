@@ -41,7 +41,7 @@ public class HistoryActivity extends AppCompatActivity {
                 BufferedReader reader = new BufferedReader(inputStreamReader);
                 String line = reader.readLine();
                 while (line != null) {
-                    Log.d("StackOverflow", line);
+                    Log.d("Test", line);
                     String timestamp = line.substring(0,"yyyy-MM-dd HH:mm:ss".length());
                     String content = line.substring("yyyy-MM-dd HH:mm:ss".length()+1);
                     results.add(new ScanResult(timestamp,content));
@@ -58,12 +58,6 @@ public class HistoryActivity extends AppCompatActivity {
         }
         listResults.setAdapter(adapter);
 
-//        listResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                AppState.get().setCurrentPayment(payments.get(i));
-//                startActivity(new Intent(getApplicationContext(), AddActivity.class));
-//            }
-//        });
+//
     }
 }

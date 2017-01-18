@@ -14,7 +14,7 @@
         android:id="@+id/tStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Found 5 scan results"/>
+        android:hint="Found 0 scan results"/>
 
     <ListView
         android:layout_below="@id/tStatus"

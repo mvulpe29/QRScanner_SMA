@@ -25,14 +25,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="1"/>
+                android:text="@string/testNumber"/>
 
             <TextView
                 android:id="@+id/tName"
+                android:layout_toRightOf="@id/tIndex"
+                android:layout_toLeftOf="@+id/tDelete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Fish and chips"/>
+                android:text="@string/testContent"/>
+
+            <ImageButton
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:scaleType="center"
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:id="@+id/tDelete"
+                android:src="@drawable/ic_delete"
+                />
         </RelativeLayout>
 
         <RelativeLayout
@@ -46,14 +58,14 @@
                 android:id="@+id/tDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Date: 2016-10-26"/>
+                android:hint="@string/testDate"/>
 
             <TextView
                 android:id="@+id/tTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:hint="Time: 11:15:05"/>
+                android:hint="@string/testTime"/>
 
         </RelativeLayout>
 
