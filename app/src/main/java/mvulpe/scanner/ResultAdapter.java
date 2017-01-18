@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.vision.text.Text;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -31,6 +33,7 @@ public class ResultAdapter extends ArrayAdapter<ScanResult> {
     private List<ScanResult> results;
     private int layoutResID;
     private ResultAdapter me = this;
+    private TextView statusText;
 
     public ResultAdapter(Context context, int layoutResourceID, List<ScanResult> results) {
         super(context, layoutResourceID, results);
@@ -55,6 +58,7 @@ public class ResultAdapter extends ArrayAdapter<ScanResult> {
             itemHolder.tDate = (TextView) view.findViewById(R.id.tDate);
             itemHolder.tTime = (TextView) view.findViewById(R.id.tTime);
             itemHolder.tDelete = (ImageButton) view.findViewById(R.id.tDelete);
+            statusText = (TextView) view.findViewById(R.id.tStatus);
 
             view.setTag(itemHolder);
 
@@ -92,6 +96,7 @@ public class ResultAdapter extends ArrayAdapter<ScanResult> {
                     }
                     results.remove(hItem);
                     me.notifyDataSetChanged();
+                    statusText.setText("Found " + results.size() + " scan results.");
                     writer.close();
                     reader.close();
 

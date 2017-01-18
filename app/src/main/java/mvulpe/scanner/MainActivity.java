@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
 
-
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         myToolbar.setVisibility(View.GONE);
@@ -183,8 +182,6 @@ public class MainActivity extends AppCompatActivity {
                         outputStream = openFileOutput(file, Context.MODE_APPEND);
                         outputStream.write(textToWrite.getBytes());
                         outputStream.close();
-                        Toast toast = Toast.makeText(this, textToWrite,Toast.LENGTH_LONG);
-                        toast.show();
                     } catch (Exception e){
                         e.printStackTrace();
                     }
