@@ -94,8 +94,6 @@ public final class BarcodeCaptureActivity extends AppCompatActivity{
         setSupportActionBar(myToolbar);
 
         boolean hasFlash = this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-//        RelativeLayout l = (RelativeLayout) findViewById(R.id.flashLayout);
-//        if(!hasFlash) l.setVisibility(View.GONE);
 
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);

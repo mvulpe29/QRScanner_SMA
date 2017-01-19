@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.vision.text.Text;
 
@@ -76,8 +77,6 @@ public class ResultAdapter extends ArrayAdapter<ScanResult> {
             @Override
             public void onClick(View v) {
                 try {
-//                    File inputFile = new File("results");
-
 
                     InputStream inputStream = context.openFileInput("results");
                     OutputStream outputStream = context.openFileOutput("tempResults",Context.MODE_APPEND);
@@ -104,6 +103,8 @@ public class ResultAdapter extends ArrayAdapter<ScanResult> {
                     File f2 = context.getFileStreamPath("tempResults");
 
                     boolean successful = f2.renameTo(f1);
+
+                    Toast.makeText(context,"Successfully deleted entry",Toast.LENGTH_LONG).show();
                 }catch(FileNotFoundException e){
                     e.printStackTrace();
                 }catch(IOException e){
