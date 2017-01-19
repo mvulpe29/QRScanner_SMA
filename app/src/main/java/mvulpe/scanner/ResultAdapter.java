@@ -30,13 +30,13 @@ import java.util.List;
  */
 public class ResultAdapter extends ArrayAdapter<ScanResult> {
 
-    private Context context;
+    private Activity context;
     private List<ScanResult> results;
     private int layoutResID;
     private ResultAdapter me = this;
     private TextView statusText;
 
-    public ResultAdapter(Context context, int layoutResourceID, List<ScanResult> results) {
+    public ResultAdapter(Activity context, int layoutResourceID, List<ScanResult> results) {
         super(context, layoutResourceID, results);
         this.context = context;
         this.results = results;
@@ -59,7 +59,7 @@ public class ResultAdapter extends ArrayAdapter<ScanResult> {
             itemHolder.tDate = (TextView) view.findViewById(R.id.tDate);
             itemHolder.tTime = (TextView) view.findViewById(R.id.tTime);
             itemHolder.tDelete = (ImageButton) view.findViewById(R.id.tDelete);
-            statusText = (TextView) view.findViewById(R.id.tStatus);
+            statusText = (TextView) context.findViewById(R.id.tStatus);
 
             view.setTag(itemHolder);
 

@@ -93,9 +93,6 @@ public final class BarcodeCaptureActivity extends AppCompatActivity{
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        boolean hasFlash = this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-
-
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
 
@@ -127,8 +124,6 @@ public final class BarcodeCaptureActivity extends AppCompatActivity{
 
         boolean hasFlash = this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
 
-
-
         MenuItem menuItem = menu.findItem(R.id.myswitch);
         SwitchCompat switchCompat = (SwitchCompat) menuItem.getActionView().findViewById(R.id.switchForActionBar);
 
@@ -141,7 +136,6 @@ public final class BarcodeCaptureActivity extends AppCompatActivity{
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
                     switch (buttonView.getId()){
                         case R.id.switchForActionBar:
-
                             if(isChecked)   mCameraSource.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                             else    mCameraSource.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
                             break;
