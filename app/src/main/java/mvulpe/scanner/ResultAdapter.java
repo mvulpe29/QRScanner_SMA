@@ -2,7 +2,6 @@ package mvulpe.scanner;
 
 import android.app.Activity;
 import android.content.Context;
-import android.icu.util.Output;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,6 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.vision.text.Text;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
